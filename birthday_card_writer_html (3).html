@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Funny Birthday Card Writer</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7, #fbc2eb, #a6c1ee);
+      min-height: 100vh;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 2.8rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ff4d6d, #ff9f1c, #ffd60a, #2ec4b6, #4361ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .header p {
+      margin-top: 12px;
+      color: #4b5563;
+      font-size: 1.1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .card-preview {
+      background: linear-gradient(180deg, #fffdf7 0%, #fff8e8 100%);
+      border-radius: 28px;
+      padding: 32px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+      border: 2px solid rgba(255, 183, 77, 0.35);
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-preview::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border: 2px dashed rgba(255, 105, 135, 0.28);
+      border-radius: 22px;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      padding: 28px 18px;
+    }
+
+    .card-kicker {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #db2777;
+      margin-bottom: 14px;
+      font-weight: bold;
+    }
+
+    .card-greeting {
+      font-family: "Georgia", serif;
+      font-size: 2.1rem;
+      line-height: 1.2;
+      color: #be185d;
+      margin-bottom: 18px;
+    }
+
+    .card-message {
+      font-family: "Georgia", serif;
+      font-size: 1.2rem;
+      line-height: 1.9;
+      color: #374151;
+      white-space: pre-wrap;
+      max-width: 520px;
+    }
+
+    .card-signoff {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin-top: 24px;
+      font-family: "Brush Script MT", "Segoe Script", cursive;
+      font-size: 2rem;
+      color: #7c3aed;
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 16px;
+      font-size: 1rem;
+    }
+
+    textarea {
+      min-height: 220px;
+      resize: vertical;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 16px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .primary {
+      background: #111827;
+      color: white;
+    }
+
+    .secondary {
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .tip {
+      margin-top: 16px;
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 14px;
+      color: #4b5563;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🎉 Ultimate Birthday Card Generator 🎂</h1>
+      <p>Turn basic details into hilarious, ready-to-use birthday cards. Warning: may cause excessive laughing.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Card Details</h2>
+
+        <div class="field">
+          <label for="name">Person's name</label>
+          <input id="name" type="text" placeholder="e.g. Sam" />
+        </div>
+
+        <div class="field">
+          <label for="age">Age</label>
+          <input id="age" type="number" placeholder="e.g. 32" />
+        </div>
+
+        <div class="field">
+          <label for="hobby">Hobby</label>
+          <input id="hobby" type="text" placeholder="e.g. gardening" />
+        </div>
+
+        <div class="buttons">
+          <button class="primary" id="generateBtn">Generate message</button>
+          <button class="secondary" id="anotherBtn">Try another</button>
+        </div>
+      </div>
+
+      <div>
+        <div id="cardList" style="display:flex; flex-direction:column; gap:20px;"></div>
+      </div>
+    </div>
+
+        <div class="card-signoff">With lots of cake and chaos ✨</div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <script>
+    const nameInput = document.getElementById('name');
+    const ageInput = document.getElementById('age');
+    const hobbyInput = document.getElementById('hobby');
+    const cardList = document.getElementById('cardList');
+    const copyBtn = document.getElementById('copyBtn');
+
+    function getTemplate(name, age, hobby) {
+      const templates = [
+        `Happy ${age}th Birthday, ${name}! You're now at the perfect age: old enough to know better, but still young enough to blame everything on "just having fun." Hope your day is packed with cake, laughs, and enough time for ${hobby} to count as birthday training.`,
+
+        `${name}, congrats on turning ${age}! At this point, birthdays are basically nature's way of saying, "Wow, you've really kept this up." May your day be full of presents, snacks, and uninterrupted ${hobby} — which, let's be honest, is probably your true love language.`,
+
+        `Happy Birthday, ${name}! ${age} looks good on you — mainly because you wear it with confidence and a suspicious amount of denial. Wishing you a year full of success, laughter, and many glorious hours of ${hobby}.`,
+
+        `Cheers to ${name} turning ${age}! You're not getting older, you're becoming a classic — like fine wine, vintage denim, or that one story you tell every year. Hope your birthday includes lots of cake and plenty of time for ${hobby}.`,
+
+        `Happy ${age}th, ${name}! Scientists say people who enjoy ${hobby} age better, and honestly, who am I to argue with science? Hope your birthday is ridiculous in the best way: full of fun, frosting, and zero awkward singing.`
+      ];
+
+      return templates[Math.floor(Math.random() * templates.length)];
+    }
+
+    function generateMessage() {
+      const name = nameInput.value.trim();
+      const age = ageInput.value.trim();
+      const hobby = hobbyInput.value.trim();
+
+      if (!name || !age || !hobby) {
+        alert('Please fill in the name, age, and hobby first.');
+        return;
+      }
+
+      const message = getTemplate(name, age, hobby);
+
+      const card = document.createElement('div');
+      card.className = 'card-preview';
+      card.innerHTML = `
+        <div class="card-inner">
+          <div class="card-kicker">Inside your birthday card</div>
+          <div class="card-greeting">Happy Birthday!</div>
+          <div class="card-message">${message}</div>
+        </div>
+        <div class="card-signoff">With lots of cake and chaos ✨</div>
+      `;
+
+      cardList.prepend(card);
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', generateMessage);
+    document.getElementById('anotherBtn').addEventListener('click', generateMessage);
+
+    copyBtn.addEventListener('click', async () => {
+      const firstCard = cardList.firstElementChild;
+      if (!firstCard) return;
+
+      const text = firstCard.querySelector('.card-message').textContent;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => {
+          copyBtn.textContent = 'Copy message';
+        }, 1500);
+      } catch (error) {
+        alert('Copy failed. Please copy the text manually.');
+      }
+    });
+  </script>
+</body>
+</html>
